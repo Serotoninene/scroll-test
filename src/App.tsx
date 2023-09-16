@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const array = new Array(3).fill(0);
-const sliderArray = ["blue", "green", "red"];
+const array = new Array(2).fill(0);
+const sliderArray = ["blue", "green", "salmon"];
 
 const Placeholder = () => {
   return (
@@ -24,32 +24,23 @@ const PinnedPlaceholder = () => {
   useEffect(() => {
     if (!ref.current || !sliderRef.current) return;
 
-    // gsap.to(ref.current, {
-    //   scrollTrigger: {
-    //     trigger: ref.current,
-    //     start: "top top",
-    //     end: "bottom top",
-    //     pin: true,
-    //     pinSpacing: false,
-    //     scrub: true,
-    //   },
-    // });
-
     gsap.to(sliderRef.current, {
       xPercent: -100 * (sliderArray.length - 1),
       scrollTrigger: {
         trigger: ref.current,
         start: "top top",
         markers: true,
-        end: "bottom top",
+        end: () => "+=" + sliderRef.current?.offsetWidth,
         scrub: 0.9,
         pin: true,
         pinSpacing: false,
         snap: {
+          snapTo: 1 / 2, // progress increment
           // or "labels" or function or Array
           duration: 0.5,
           directional: true,
           ease: "power3",
+          // onComplete: callback,
           // other callbacks: onStart, onInterrupt
         },
       },
