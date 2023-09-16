@@ -1,5 +1,3 @@
-// lenis context
-
 import Lenis from "@studio-freight/lenis";
 import React, {
   createContext,
@@ -7,10 +5,11 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 
-export const LenisContext = createContext({
+export const LenisContext = createContext<{
+  lenis: React.MutableRefObject<Lenis | undefined> | null;
+}>({
   lenis: null,
 });
 
@@ -27,6 +26,7 @@ export const LenisProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     lenis.current = new Lenis({
       lerp: 0.1,
+      wheelMultiplier: 100,
     });
 
     function raf(time: number) {
@@ -42,10 +42,10 @@ export const LenisProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// export const useLoadingContext = () => {
-//   const context = useContext(LoadingContext);
-//   if (context === undefined) {
-//     throw new Error("useLoadingContext must be used within a LoadingProvider");
-//   }
-//   return context;
-// };
+export const useLenis = () => {
+  const context = useContext(LenisContext);
+  if (context === undefined) {
+    throw new Error("useLoadingContext must be used within a LoadingProvider");
+  }
+  return context;
+};
