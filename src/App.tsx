@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const array = new Array(2).fill(0);
-const sliderArray = ["blue", "green", "salmon"];
+const sliderArray = ["blue", "green", "salmon", "lightblue", "lightgreen"];
 
 const Placeholder = () => {
   return (
@@ -22,42 +22,38 @@ const PinnedPlaceholder = () => {
   }, []);
 
   useEffect(() => {
-    if (!ref.current || !sliderRef.current) return;
+    if (!ref.current) return;
 
-    gsap.to(sliderRef.current, {
+    const refWidth = ref.current.getBoundingClientRect().width;
+    console.log(refWidth);
+
+    gsap.to(ref.current, {
       xPercent: -100 * (sliderArray.length - 1),
       scrollTrigger: {
         trigger: ref.current,
+        scrub: 1,
         start: "top top",
-        markers: true,
-        end: () => "+=" + sliderRef.current?.offsetWidth,
-        scrub: 0.9,
+        end: "bottom top",
         pin: true,
-        pinSpacing: false,
-        snap: {
-          snapTo: 1 / 2, // progress increment
-          // or "labels" or function or Array
-          duration: 0.5,
-          directional: true,
-          ease: "power3",
-          // onComplete: callback,
-          // other callbacks: onStart, onInterrupt
+        snap: 1 / (sliderArray.length - 1),
+        onUpdate: (e) => {
+          console.log("SCROLL : ", e.progress);
         },
       },
     });
   }, [ref.current, sliderRef.current]);
 
   return (
-    <section ref={ref} className="h-[300vh]">
-      <div ref={sliderRef} className="flex">
-        {sliderArray.map((color, idx) => (
-          <div
-            className="h-screen w-screen flex-none border border-red-400"
-            style={{ backgroundColor: color }}
-            key={idx}
-          ></div>
-        ))}
-      </div>
+    <section ref={ref} className="flex flex-nowrap h-[500vw]">
+      {sliderArray.map((color, idx) => (
+        <div
+          //  okay i can't get this to work, the snap is off
+          //  for the first panels probably because of the pin or something
+          className="panel"
+          style={{ backgroundColor: color }}
+          key={idx}
+        ></div>
+      ))}
     </section>
   );
 };
