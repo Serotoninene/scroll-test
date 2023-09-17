@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const array = new Array(2).fill(0);
@@ -19,13 +20,13 @@ const PinnedPlaceholder = () => {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollToPlugin);
   }, []);
 
   useEffect(() => {
     if (!ref.current) return;
 
     const refWidth = ref.current.getBoundingClientRect().width;
-    console.log(refWidth);
 
     gsap.to(ref.current, {
       xPercent: -100 * (sliderArray.length - 1),
@@ -35,9 +36,13 @@ const PinnedPlaceholder = () => {
         start: "top top",
         end: "bottom top",
         pin: true,
-        snap: 1 / (sliderArray.length - 1),
-        onUpdate: (e) => {
-          console.log("SCROLL : ", e.progress);
+        onScrubComplete: () => {
+          const closest = Math.round(scrollLeft / refWidth) * refWidth;
+          console.log(closest);
+          gsap.to(ref.current, {
+            scrollTo: closest,
+            duration: 0.5,
+          });
         },
       },
     });
