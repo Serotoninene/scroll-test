@@ -49,13 +49,8 @@ h6 {
 }
 
 .panel {
-  height: 100vh;
+  height: 500vh;
   width: 100vw;
   flex: none;
   border: 1px solid black;
-  background-color: red;
-}
-
-.panel:first-of-type {
-  width: 200vw;
 }

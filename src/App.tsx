@@ -26,24 +26,20 @@ const PinnedPlaceholder = () => {
   useEffect(() => {
     if (!ref.current) return;
 
-    const refWidth = ref.current.getBoundingClientRect().width;
+    let dist = 0;
 
     gsap.to(ref.current, {
       xPercent: -100 * (sliderArray.length - 1),
+      ease: "none",
       scrollTrigger: {
         trigger: ref.current,
         scrub: 1,
         start: "top top",
+        markers: true,
         end: "bottom top",
         pin: true,
-        onScrubComplete: () => {
-          const closest = Math.round(scrollLeft / refWidth) * refWidth;
-          console.log(closest);
-          gsap.to(ref.current, {
-            scrollTo: closest,
-            duration: 0.5,
-          });
-        },
+        pinSpacing: true,
+        snap: 1 / (sliderArray.length - 1),
       },
     });
   }, [ref.current, sliderRef.current]);
@@ -65,7 +61,7 @@ const PinnedPlaceholder = () => {
 
 function App() {
   return (
-    <main className="min-h-screen bg-slate-100">
+    <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
       {array.map((_, idx) => (
         <Placeholder key={idx} />
       ))}
