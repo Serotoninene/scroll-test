@@ -3,8 +3,7 @@ import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const array = new Array(2).fill(0);
-const sliderArray = ["blue", "green", "salmon", "lightblue", "lightgreen"];
+const sliderArray = ["lightblue", "lightgreen", "lightpink"];
 
 const Placeholder = () => {
   return (
@@ -16,8 +15,6 @@ const Placeholder = () => {
 
 const PinnedPlaceholder = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const sliderRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     gsap.registerPlugin(ScrollToPlugin);
@@ -26,30 +23,31 @@ const PinnedPlaceholder = () => {
   useEffect(() => {
     if (!ref.current) return;
 
-    let dist = 0;
-
     gsap.to(ref.current, {
       xPercent: -100 * (sliderArray.length - 1),
       ease: "none",
       scrollTrigger: {
         trigger: ref.current,
-        scrub: 1,
+        scrub: 0.8,
         start: "top top",
-        markers: true,
-        end: "bottom top",
+        end: "bottom bottom",
         pin: true,
-        pinSpacing: true,
+        pinSpacing: false,
         snap: 1 / (sliderArray.length - 1),
       },
     });
-  }, [ref.current, sliderRef.current]);
+  }, [ref.current]);
 
   return (
-    <section ref={ref} className="flex flex-nowrap h-[500vw]">
+    <section
+      ref={ref}
+      className="flex flex-nowrap opacity-80"
+      style={{
+        height: sliderArray.length * 100 + "vh",
+      }}
+    >
       {sliderArray.map((color, idx) => (
         <div
-          //  okay i can't get this to work, the snap is off
-          //  for the first panels probably because of the pin or something
           className="panel"
           style={{ backgroundColor: color }}
           key={idx}
@@ -59,16 +57,72 @@ const PinnedPlaceholder = () => {
   );
 };
 
+const OneSidePinned = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const leftSide = useRef<HTMLDivElement>(null);
+  const rightSide = useRef<any>([]);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollToPlugin);
+  }, []);
+
+  useEffect(() => {
+    ScrollTrigger.create({
+      trigger: ref.current,
+      start: "top top",
+      end: "bottom bottom",
+      pin: leftSide.current,
+      snap: 1 / (sliderArray.length - 1),
+    });
+
+    rightSide.current.forEach((panel: HTMLDivElement, idx: number) => {
+      gsap.to(panel, {
+        scrollTrigger: {
+          trigger: panel,
+          markers: true,
+        },
+      });
+    });
+  }, [leftSide.current, rightSide.current]);
+  return (
+    <div
+      ref={ref}
+      className="bg-blue-200 flex"
+      style={{
+        height: sliderArray.length * 100 + "vh",
+      }}
+    >
+      <div
+        ref={leftSide}
+        className="bg-red-300 h-screen w-1/2 flex justify-center items-center"
+      >
+        STICKY PART
+      </div>
+      <div className="w-1/2">
+        {sliderArray.map((color, idx) => (
+          <div
+            key={color}
+            ref={(e) => (rightSide.current[idx] = e)}
+            className="h-screen border border-red-400 w-full"
+            style={{
+              background: color,
+            }}
+          ></div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
-      {array.map((_, idx) => (
-        <Placeholder key={idx} />
-      ))}
+      <Placeholder />
+      <OneSidePinned />
+      <Placeholder />
       <PinnedPlaceholder />
-      {array.map((_, idx) => (
-        <Placeholder key={idx} />
-      ))}
+      <Placeholder />
     </main>
   );
 }
