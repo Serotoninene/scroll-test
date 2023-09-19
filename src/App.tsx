@@ -118,27 +118,54 @@ const OneSidePinned = () => {
 
 const imgArray = new Array(9).fill(0);
 const IMAGE_URL =
-  "https://images.unsplash.com/photo-1694636775862-c35027446a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3028&q=80";
+  "https://cdn.carredartistes.com/fr-fr/content_images/paul%20cezanne3.jpg";
 
 const FlipPlaceholder = () => {
-  const [isGrid, setIsGrid] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleFlip = () => {
-    setIsGrid(!isGrid);
-  };
+  useEffect(() => {
+    gsap.registerPlugin(Flip);
+    gsap.registerPlugin(ScrollTrigger);
 
-  useEffect(() => {}, []);
+    // set the ending state just to capture the flip state
+    containerRef.current?.classList.add("gallery_row");
+    const flipState = Flip.getState([
+      containerRef.current,
+      ...imagesRef.current,
+    ]);
+    containerRef.current?.classList.remove("gallery_row");
+
+    // Create the Flip animation timeline
+    Flip.from(flipState, {
+      absolute: false,
+      scale: true,
+      simple: true,
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "center center",
+        end: "bottom top",
+        pin: true,
+        scrub: true,
+      },
+      stagger: 0,
+    });
+  }, [containerRef.current, imagesRef.current]);
 
   return (
-    <div
-      onClick={handleFlip}
-      className={`relative h-screen w-screen overflow-hidden ${
-        isGrid ? "grid grid-cols-3 grid-rows-3 gap-2" : "flex flex-col"
-      }`}
-    >
+    <div ref={containerRef} className="gallery_container gallery_grid">
       {imgArray.map((_, idx) => (
-        <div key={idx} className="bg-red-300 overflow-hidden rounded">
-          <img src={IMAGE_URL} className="w-full object-cover" />
+        <div
+          key={idx}
+          ref={(e) => (imagesRef.current[idx] = e)}
+          className="gallery_item overflow-hidden rounded flex-none "
+        >
+          <div
+            className="gallery_item_inner"
+            style={{
+              backgroundImage: `url(${IMAGE_URL})`,
+            }}
+          ></div>
         </div>
       ))}
     </div>

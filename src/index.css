@@ -53,3 +53,29 @@ h6 {
   width: 100vw;
   flex: none;
 }
+
+.gallery_container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.gallery_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.gallery_grid.gallery_row .gallery_item {
+  flex: none;
+  width: 100vw;
+  height: 100vh;
+}
+
+.gallery_item_inner {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
