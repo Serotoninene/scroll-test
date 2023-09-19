@@ -60,7 +60,7 @@ const PinnedPlaceholder = () => {
 const OneSidePinned = () => {
   const ref = useRef<HTMLDivElement>(null);
   const leftSide = useRef<HTMLDivElement>(null);
-  const rightSide = useRef<any>([]);
+  const rightSide = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -76,7 +76,7 @@ const OneSidePinned = () => {
       snap: 1 / (sliderArray.length - 1),
     });
 
-    rightSide.current.forEach((panel: HTMLDivElement, idx: number) => {
+    rightSide.current.forEach((panel: HTMLDivElement | null) => {
       gsap.to(panel, {
         scrollTrigger: {
           trigger: panel,
