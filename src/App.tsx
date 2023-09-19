@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Flip } from "gsap/Flip";
 
 const sliderArray = ["lightblue", "lightgreen", "lightpink"];
 
@@ -115,9 +116,40 @@ const OneSidePinned = () => {
   );
 };
 
+const imgArray = new Array(9).fill(0);
+const IMAGE_URL =
+  "https://images.unsplash.com/photo-1694636775862-c35027446a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3028&q=80";
+
+const FlipPlaceholder = () => {
+  const [isGrid, setIsGrid] = useState(true);
+
+  const handleFlip = () => {
+    setIsGrid(!isGrid);
+  };
+
+  useEffect(() => {}, []);
+
+  return (
+    <div
+      onClick={handleFlip}
+      className={`relative h-screen w-screen overflow-hidden ${
+        isGrid ? "grid grid-cols-3 grid-rows-3 gap-2" : "flex flex-col"
+      }`}
+    >
+      {imgArray.map((_, idx) => (
+        <div key={idx} className="bg-red-300 overflow-hidden rounded">
+          <img src={IMAGE_URL} className="w-full object-cover" />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 function App() {
   return (
     <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
+      <Placeholder />
+      <FlipPlaceholder />
       <Placeholder />
       <OneSidePinned />
       <Placeholder />
