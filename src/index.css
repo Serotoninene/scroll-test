@@ -40,22 +40,33 @@ body {
 /* now for the flip */
 .gallery--wrap {
   width: 100vw;
-  height: 100vh;
+  height: 101vh;
   overflow: hidden;
+  position: relative;
+  /* border: 1px solid red; */
+}
+
+.gallery {
+  position: absolute;
 }
 
 .gallery--grid {
   height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   grid-gap: 1rem;
   padding: 1rem;
+  inset: 0;
 }
 
 .gallery--grid.gallery--switch {
-  width: 300vw;
-  height: 300vh;
-  transform: translate(-100vw, -100vh);
+  grid-gap: 56px;
+  padding: 0;
+  grid-template-columns: repeat(3, 110vw);
+  grid-template-rows: repeat(3, 110vh);
+  left: calc(-110vw - (56px));
+  top: calc(-110vh - 56px);
 }
 
 .gallery__item-cut {
@@ -65,7 +76,6 @@ body {
 .gallery__item-inner {
   width: 150%;
   height: 150%;
-
   background-size: cover;
   background-repeat: no-repeat;
 }

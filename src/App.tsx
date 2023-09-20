@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -130,18 +130,14 @@ const FlipPlaceholder = () => {
   const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
   const innerImagesRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     galleryRef.current?.classList.add("gallery--switch");
-
     const flipState = Flip.getState([
       ...imagesRef.current,
       ...innerImagesRef.current,
       galleryRef.current,
-      containerRef.current,
     ]);
-
     galleryRef.current?.classList.remove("gallery--switch");
-
     Flip.to(flipState, {
       absolute: false,
       scale: true,
@@ -150,11 +146,16 @@ const FlipPlaceholder = () => {
         trigger: containerRef.current,
         start: "top top",
         markers: true,
-        end: "bottom top",
-        pin: true,
-        scrub: true,
+        end: "bottom 25%",
+        scrub: 1,
       },
-      stagger: 0,
+    });
+
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: "top top",
+      end: "bottom top",
+      pin: true,
     });
   }, []);
 
@@ -162,7 +163,7 @@ const FlipPlaceholder = () => {
     <div ref={containerRef} className="gallery--wrap">
       <div
         ref={galleryRef}
-        className="gallery gallery--grid"
+        className="gallery gallery--grid gallery--switch"
         data-flip-id="gallery"
       >
         {imgArray.map((_, idx) => (
@@ -192,9 +193,6 @@ function App() {
     <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
       <Placeholder />
       <FlipPlaceholder />
-      <div className="h-screen w-screen">
-        <img src={IMAGE_URL} className="w-full" />
-      </div>
       <Placeholder />
       {/* <OneSidePinned />
       <Placeholder />
