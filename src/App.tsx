@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -49,7 +49,7 @@ const PinnedPlaceholder = () => {
     >
       {sliderArray.map((color, idx) => (
         <div
-          className="panel"
+          className="panel "
           style={{ backgroundColor: color }}
           key={idx}
         ></div>
@@ -78,7 +78,7 @@ const OneSidePinned = () => {
     });
 
     rightSide.current.forEach((panel: HTMLDivElement | null) => {
-      gsap.to(panel, {
+      gsap.from(panel, {
         scrollTrigger: {
           trigger: panel,
           markers: true,
@@ -123,21 +123,25 @@ const IMAGE_URL =
 const FlipPlaceholder = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const innerImagesRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(Flip);
     gsap.registerPlugin(ScrollTrigger);
 
     // set the ending state just to capture the flip state
-    containerRef.current?.classList.add("gallery_row");
+    containerRef.current?.classList.add("gallery--switch");
     const flipState = Flip.getState([
-      containerRef.current,
-      ...imagesRef.current,
+      ".gallery-wrap",
+      ".gallery__item",
+      ".gallery",
+      ".gallery__item",
+      ".gallery__item-inner",
     ]);
-    containerRef.current?.classList.remove("gallery_row");
+    containerRef.current?.classList.remove("gallery--switch");
 
     // Create the Flip animation timeline
-    Flip.from(flipState, {
+    Flip.to(flipState, {
       absolute: false,
       scale: true,
       simple: true,
@@ -146,6 +150,7 @@ const FlipPlaceholder = () => {
         start: "center center",
         end: "bottom top",
         pin: true,
+
         scrub: true,
       },
       stagger: 0,
@@ -153,21 +158,28 @@ const FlipPlaceholder = () => {
   }, [containerRef.current, imagesRef.current]);
 
   return (
-    <div ref={containerRef} className="gallery_container gallery_grid">
-      {imgArray.map((_, idx) => (
-        <div
-          key={idx}
-          ref={(e) => (imagesRef.current[idx] = e)}
-          className="gallery_item overflow-hidden rounded flex-none "
-        >
+    <div className="gallery-wrap gallery-wrap--large">
+      <div
+        ref={containerRef}
+        className="gallery gallery--grid gallery--breakout"
+        id="gallery-2"
+      >
+        {imgArray.map((_, idx) => (
           <div
-            className="gallery_item_inner"
-            style={{
-              backgroundImage: `url(${IMAGE_URL})`,
-            }}
-          ></div>
-        </div>
-      ))}
+            key={idx}
+            ref={(e) => (imagesRef.current[idx] = e)}
+            className="gallery__item gallery__item-cut"
+          >
+            <div
+              ref={(e) => (innerImagesRef.current[idx] = e)}
+              className="gallery__item-inner"
+              style={{
+                backgroundImage: `url(${IMAGE_URL})`,
+              }}
+            ></div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -176,7 +188,7 @@ function App() {
   return (
     <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
       <Placeholder />
-      <FlipPlaceholder />
+      {/* <FlipPlaceholder /> */}
       <Placeholder />
       <OneSidePinned />
       <Placeholder />
