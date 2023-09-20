@@ -1,10 +1,14 @@
 import { useEffect, useRef } from "react";
+
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 
 const sliderArray = ["lightblue", "lightgreen", "lightpink"];
+
+gsap.registerPlugin(Flip);
+gsap.registerPlugin(ScrollTrigger);
 
 const Placeholder = () => {
   return (
@@ -118,61 +122,60 @@ const OneSidePinned = () => {
 
 const imgArray = new Array(9).fill(0);
 const IMAGE_URL =
-  "https://cdn.carredartistes.com/fr-fr/content_images/paul%20cezanne3.jpg";
+  "https://as2.ftcdn.net/v2/jpg/05/59/13/39/1000_F_559133954_0kKDwhaWzU2ltOH4ylCkP1B4f7N6XkPD.jpg";
 
 const FlipPlaceholder = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
   const innerImagesRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    gsap.registerPlugin(Flip);
-    gsap.registerPlugin(ScrollTrigger);
+    galleryRef.current?.classList.add("gallery--switch");
 
-    // set the ending state just to capture the flip state
-    containerRef.current?.classList.add("gallery--switch");
     const flipState = Flip.getState([
-      ".gallery-wrap",
-      ".gallery__item",
-      ".gallery",
-      ".gallery__item",
-      ".gallery__item-inner",
+      ...imagesRef.current,
+      ...innerImagesRef.current,
+      galleryRef.current,
+      containerRef.current,
     ]);
-    containerRef.current?.classList.remove("gallery--switch");
 
-    // Create the Flip animation timeline
+    galleryRef.current?.classList.remove("gallery--switch");
+
     Flip.to(flipState, {
       absolute: false,
       scale: true,
       simple: true,
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "center center",
+        start: "top top",
+        markers: true,
         end: "bottom top",
         pin: true,
-
         scrub: true,
       },
       stagger: 0,
     });
-  }, [containerRef.current, imagesRef.current]);
+  }, []);
 
   return (
-    <div className="gallery-wrap gallery-wrap--large">
+    <div ref={containerRef} className="gallery--wrap">
       <div
-        ref={containerRef}
-        className="gallery gallery--grid gallery--breakout"
-        id="gallery-2"
+        ref={galleryRef}
+        className="gallery gallery--grid"
+        data-flip-id="gallery"
       >
         {imgArray.map((_, idx) => (
           <div
             key={idx}
             ref={(e) => (imagesRef.current[idx] = e)}
-            className="gallery__item gallery__item-cut"
+            data-flip-id={"gallery__item-" + idx}
+            className="gallery__item-cut"
           >
             <div
               ref={(e) => (innerImagesRef.current[idx] = e)}
               className="gallery__item-inner"
+              data-flip-id={"gallery__item-inner-" + idx}
               style={{
                 backgroundImage: `url(${IMAGE_URL})`,
               }}
@@ -188,12 +191,15 @@ function App() {
   return (
     <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
       <Placeholder />
-      {/* <FlipPlaceholder /> */}
+      <FlipPlaceholder />
+      <div className="h-screen w-screen">
+        <img src={IMAGE_URL} className="w-full" />
+      </div>
       <Placeholder />
-      <OneSidePinned />
+      {/* <OneSidePinned />
       <Placeholder />
       <PinnedPlaceholder />
-      <Placeholder />
+      <Placeholder /> */}
     </main>
   );
 }
