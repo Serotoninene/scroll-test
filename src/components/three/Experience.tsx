@@ -7,7 +7,7 @@ export const Experience = () => {
     <div className="h-full">
       <CustomCanvas>
         <OrbitControls />
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={1} />
         <spotLight position={[10, 15, 10]} angle={0.3} />
         <pointLight position={[-10, -10, -10]} />
         <Skate />
