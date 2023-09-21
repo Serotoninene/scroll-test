@@ -21,7 +21,7 @@ export const Skate = () => {
       step: 0.01,
     },
     position: {
-      value: [-24, 0, 0],
+      value: [4, 0, 0],
       min: -180,
       max: 180,
     },
@@ -34,8 +34,8 @@ export const Skate = () => {
   // });
 
   useFrame(() => {
-    skateRef.current?.rotation.set(...controls.rotation);
-    skateRef.current.position.set(...controls.position);
+    skateRef.current?.rotation?.set(...controls.rotation);
+    skateRef.current?.position?.set(...controls.position);
   });
 
   return (
