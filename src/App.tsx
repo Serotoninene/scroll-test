@@ -1,11 +1,21 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 
+// Gsap
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 
+// Three js
+import { Experience } from "./components/three";
+
+// utils
+import { useWindowSize } from "./hooks";
+
 const sliderArray = ["lightblue", "lightgreen", "lightpink"];
+const imgArray = new Array(9).fill(0);
+const IMAGE_URL =
+  "https://as2.ftcdn.net/v2/jpg/05/59/13/39/1000_F_559133954_0kKDwhaWzU2ltOH4ylCkP1B4f7N6XkPD.jpg";
 
 gsap.registerPlugin(Flip);
 gsap.registerPlugin(ScrollTrigger);
@@ -120,10 +130,6 @@ const OneSidePinned = () => {
   );
 };
 
-const imgArray = new Array(9).fill(0);
-const IMAGE_URL =
-  "https://as2.ftcdn.net/v2/jpg/05/59/13/39/1000_F_559133954_0kKDwhaWzU2ltOH4ylCkP1B4f7N6XkPD.jpg";
-
 const FlipPlaceholder = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
@@ -138,6 +144,7 @@ const FlipPlaceholder = () => {
       galleryRef.current,
     ]);
     galleryRef.current?.classList.remove("gallery--switch");
+
     Flip.to(flipState, {
       absolute: false,
       scale: true,
@@ -189,15 +196,19 @@ const FlipPlaceholder = () => {
 };
 
 function App() {
+  console.log(useWindowSize);
   return (
     <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
+      <div className="h-screen fixed inset-0">
+        <Experience />
+      </div>
       <Placeholder />
       <FlipPlaceholder />
       <Placeholder />
-      {/* <OneSidePinned />
+      <OneSidePinned />
       <Placeholder />
       <PinnedPlaceholder />
-      <Placeholder /> */}
+      <Placeholder />
     </main>
   );
 }

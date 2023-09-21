@@ -40,7 +40,7 @@ body {
 /* now for the flip */
 .gallery--wrap {
   width: 100vw;
-  height: 101vh;
+  height: 100vh;
   overflow: hidden;
   position: relative;
   /* border: 1px solid red; */
@@ -65,7 +65,7 @@ body {
   padding: 0;
   grid-template-columns: repeat(3, 110vw);
   grid-template-rows: repeat(3, 110vh);
-  left: calc(-110vw - (56px));
+  left: calc(-110vw - 56px);
   top: calc(-110vh - 56px);
 }
 
