@@ -6,6 +6,15 @@ type Props = {
   skateRef: React.RefObject<Object3D>;
 };
 
+export const mergeTimelines = (timelines: gsap.core.Timeline[]) => {
+  const master = gsap.timeline({ paused: true });
+  timelines.forEach((tl) => {
+    master.add(tl);
+  });
+
+  return master;
+};
+
 export const useIntroAnim = ({ skateRef }: Props) => {
   const tl = useRef<gsap.core.Timeline>();
 
@@ -13,25 +22,15 @@ export const useIntroAnim = ({ skateRef }: Props) => {
     if (!skateRef?.current) return;
     const skateScale = window?.innerWidth * 0.1;
 
-    tl.current = gsap.timeline({
-      paused: true,
-    });
+    tl.current = gsap.timeline({});
 
-    tl.current?.fromTo(
-      skateRef.current.rotation,
-      {
-        x: 1.5,
-        y: -0.35,
-        z: 0.55,
-      },
-      {
-        x: -1.5,
-        y: 0.35,
-        z: -0.55,
-        duration: 1,
-        ease: Power3.easeOut,
-      }
-    );
+    tl.current?.from(skateRef.current.rotation, {
+      x: 1.5,
+      y: -0.35,
+      z: 0.55,
+      duration: 1,
+      ease: Power3.easeOut,
+    });
 
     tl.current?.to(
       skateRef.current.scale,
@@ -57,21 +56,39 @@ export const useScrollAnim = ({ skateRef }: Props) => {
 
   useEffect(() => {
     if (!skateRef?.current) return;
+
+    // animation timeline with only the animation
     tl.current = gsap.timeline({
-      paused: false,
+      ease: "none",
       scrollTrigger: {
         trigger: "#main--container",
         start: "top top",
         end: "bottom bottom",
-        markers: true,
-        scrub: 0.9,
+        scrub: 1,
       },
     });
 
-    tl.current.to(skateRef.current.rotation, {
-      z: 5,
-    });
+    tl.current
+      .fromTo(
+        skateRef.current.rotation,
+        {
+          z: -0.55,
+        },
+        {
+          z: 10,
+        }
+      )
+      .progress(0.0001);
 
+    // main.current = gsap.timeline({
+    //   ease: "none",
+    // });
+
+    // main.current.to(tl.current, {
+    //   progress: 1,
+    // });
+    // .to(tl.current, { progress: 0.5, duration: 1 })
+    // .to(tl.current, { progress: 1, duration: 1 });
     return () => {
       tl.current?.kill();
     };
