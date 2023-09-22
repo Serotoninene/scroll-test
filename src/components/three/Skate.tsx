@@ -2,9 +2,14 @@ import React, { useEffect, useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useWindowSize } from "../../hooks";
 import { useFrame } from "@react-three/fiber";
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import { useControls } from "leva";
 
 const SKATE_SRC = "./assets/exportSk.gltf";
+gsap.registerPlugin(ScrollTrigger);
 
 export const Skate = () => {
   // set up
@@ -28,10 +33,6 @@ export const Skate = () => {
   });
 
   useEffect(() => {}, []);
-  // // controls
-  // const controls = useControls("Position and Rotation", {
-  //   rotation,
-  // });
 
   useFrame(() => {
     skateRef.current?.rotation?.set(...controls.rotation);
