@@ -23,7 +23,10 @@ const Loader = () => {
 
 function App() {
   return (
-    <main className="bg-slate-100 h-auto overflow-hidden">
+    <main
+      id="main--container"
+      className="bg-slate-100 min-h-[500vh] overflow-hidden"
+    >
       <Suspense fallback={<Loader />}>
         <Placeholder />
         <div className="h-screen fixed inset-0 z-10">

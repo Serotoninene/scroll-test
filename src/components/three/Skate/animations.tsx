@@ -1,6 +1,5 @@
-import { gsap, Power3 } from "gsap";
 import { useEffect, useRef } from "react";
-import { useWindowSize } from "../../../hooks";
+import { gsap, Power3 } from "gsap";
 import { Object3D } from "three";
 
 type Props = {
@@ -12,10 +11,10 @@ export const useIntroAnim = ({ skateRef }: Props) => {
 
   useEffect(() => {
     if (!skateRef?.current) return;
-    const skateSCALE = window?.innerWidth * 0.1;
+    const skateScale = window?.innerWidth * 0.1;
 
     tl.current = gsap.timeline({
-      // paused: true,
+      paused: true,
     });
 
     tl.current?.fromTo(
@@ -38,9 +37,9 @@ export const useIntroAnim = ({ skateRef }: Props) => {
       skateRef.current.scale,
       {
         duration: 1,
-        x: skateSCALE,
-        y: skateSCALE,
-        z: skateSCALE,
+        x: skateScale,
+        y: skateScale,
+        z: skateScale,
       },
       "<"
     );
@@ -59,6 +58,12 @@ export const useScrollAnim = ({ skateRef }: Props) => {
   useEffect(() => {
     tl.current = gsap.timeline({
       paused: false,
+      scrollTrigger: {
+        trigger: "#main--container",
+        start: "top top",
+        end: "bottom bottom",
+        markers: true,
+      },
     });
 
     return () => {

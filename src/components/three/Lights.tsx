@@ -8,17 +8,18 @@ import { useControls } from "leva";
 export const Lights = () => {
   const pointLight = useRef<THREE.PointLight>(null);
 
-  const { position } = useControls("Lights", {
-    position: {
-      value: [-80, -160, 0],
-      min: -1080,
-      max: 1080,
-    },
-  });
+  // const { position } = useControls("Lights", {
+  //   position: {
+  //     value: [-80, -160, 0],
+  //     min: -1080,
+  //     max: 1080,
+  //   },
 
-  useFrame(() => {
-    pointLight.current?.position?.set(...position);
-  });
+  // });
+
+  // useFrame(() => {
+  //   pointLight.current?.position?.set(...position);
+  // });
 
   return (
     <>
