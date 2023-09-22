@@ -2,16 +2,11 @@ import { useRef } from "react";
 
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { Environment, useHelper } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { useControls } from "leva";
 
 export const Lights = () => {
   const pointLight = useRef<THREE.PointLight>(null);
-  useHelper(
-    pointLight.current && pointLight.current,
-    THREE.PointLightHelper,
-    "red"
-  );
 
   const { position } = useControls("Lights", {
     position: {
