@@ -32,8 +32,9 @@ export const useIntroAnim = ({ skateRef }: Props) => {
       ease: Power3.easeOut,
     });
 
-    tl.current?.to(
+    tl.current?.fromTo(
       skateRef.current.scale,
+      { x: 0.1, y: 0.1, z: 0.1 },
       {
         duration: 1,
         x: skateScale,
