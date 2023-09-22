@@ -29,6 +29,7 @@ export const useIntroAnim = ({ skateRef }: Props) => {
       y: -0.35,
       z: 0.55,
       duration: 1,
+
       ease: Power3.easeOut,
     });
 

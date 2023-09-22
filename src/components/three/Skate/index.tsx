@@ -31,14 +31,16 @@ export const Skate = () => {
 
   // triggering the introTl only when the model is done loading
   useEffect(() => {
-    const masterTl = mergeTimelines([introTl?.current, scrollTl.current]);
+    if (!introTl.current || !scrollTl.current) return;
+    const masterTl = mergeTimelines([introTl?.current, scrollTl?.current]);
 
-    masterTl.play();
-    // if (!active) {
-    //   introTl.current?.play();
-    // }
+    if (!active) {
+      masterTl.play();
+    }
 
-    return () => masterTl.kill();
+    return () => {
+      masterTl.kill();
+    };
   }, [active]);
 
   return (
