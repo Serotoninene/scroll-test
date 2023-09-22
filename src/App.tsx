@@ -95,7 +95,6 @@ const OneSidePinned = () => {
       gsap.from(panel, {
         scrollTrigger: {
           trigger: panel,
-          markers: true,
         },
       });
     });
@@ -152,7 +151,6 @@ const FlipPlaceholder = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        markers: true,
         end: "bottom 25%",
         scrub: 1,
       },
@@ -198,8 +196,8 @@ const FlipPlaceholder = () => {
 function App() {
   console.log(useWindowSize);
   return (
-    <main className="min-h-screen bg-slate-100 h-auto overflow-hidden">
-      <div className="h-screen fixed inset-0">
+    <main className="min-h-screen bg-slate-100  h-auto overflow-hidden">
+      <div className="h-screen fixed inset-0 z-10">
         <Experience />
       </div>
       <Placeholder />

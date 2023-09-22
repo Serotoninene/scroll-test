@@ -19,6 +19,10 @@
   --color-caption: #fff;
 }
 
+* {
+  overscroll-behavior: none;
+}
+
 body {
   margin: 0;
   color: var(--color-text);
