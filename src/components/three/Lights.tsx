@@ -1,9 +1,7 @@
 import { useRef } from "react";
 
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
-import { useControls } from "leva";
 
 export const Lights = () => {
   const pointLight = useRef<THREE.PointLight>(null);
