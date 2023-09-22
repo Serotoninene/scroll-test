@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { Object3D } from "three";
 
-import { useIntroAnim } from "./animations";
+import { useIntroAnim, useScrollAnim } from "./animations";
 import { useWindowSize } from "../../../hooks";
 
 const SKATE_SRC = "./assets/exportSk.gltf";
@@ -23,6 +23,9 @@ export const Skate = () => {
 
   // anims
   const introTl = useIntroAnim({
+    skateRef: skateRef as React.RefObject<Object3D>,
+  });
+  useScrollAnim({
     skateRef: skateRef as React.RefObject<Object3D>,
   });
 

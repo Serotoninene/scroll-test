@@ -56,6 +56,7 @@ export const useScrollAnim = ({ skateRef }: Props) => {
   const tl = useRef<gsap.core.Timeline>();
 
   useEffect(() => {
+    if (!skateRef?.current) return;
     tl.current = gsap.timeline({
       paused: false,
       scrollTrigger: {
@@ -63,7 +64,12 @@ export const useScrollAnim = ({ skateRef }: Props) => {
         start: "top top",
         end: "bottom bottom",
         markers: true,
+        scrub: 0.9,
       },
+    });
+
+    tl.current.to(skateRef.current.rotation, {
+      z: 5,
     });
 
     return () => {
