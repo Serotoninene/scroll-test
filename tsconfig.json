@@ -27,6 +27,6 @@
     "@shaders/*": ["./src/shaders/*"],
     "@hooks/*": ["./src/hooks/*"]
   },
-  "include": ["src"],
+  "include": ["src", "declarations.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
