@@ -1,13 +1,12 @@
-import { CustomCanvas, Skate } from ".";
+import { CustomCanvas, Fluids } from ".";
 import { Lights } from "./Lights";
 
 export const Experience = () => {
   return (
     <div className="h-full">
       <CustomCanvas>
-        {/* <OrbitControls /> */}
         <Lights />
-        <Skate />
+        <Fluids />
       </CustomCanvas>
     </div>
   );

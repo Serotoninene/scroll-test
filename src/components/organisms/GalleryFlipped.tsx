@@ -31,6 +31,7 @@ export const GalleryFlipped = ({ imgArray, IMAGE_URL }: Props) => {
     Flip.to(flipState, {
       absolute: false,
       scale: true,
+      ease: "none",
       simple: true,
       scrollTrigger: {
         trigger: containerRef.current,

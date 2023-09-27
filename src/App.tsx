@@ -5,7 +5,7 @@ import { useProgress } from "@react-three/drei";
 import { Placeholder } from "./components/atoms";
 
 // const imgArray = new Array(9).fill(0);
-// const sliderArray = ["lightblue", "lightgreen", "lightpink"];
+// // const sliderArray = ["lightblue", "lightgreen", "lightpink"];
 // const IMAGE_URL =
 //   "https://as2.ftcdn.net/v2/jpg/05/59/13/39/1000_F_559133954_0kKDwhaWzU2ltOH4ylCkP1B4f7N6XkPD.jpg";
 
@@ -23,10 +23,7 @@ const Loader = () => {
 
 function App() {
   return (
-    <main
-      id="main--container"
-      className="bg-slate-100 min-h-[500vh] overflow-hidden"
-    >
+    <main id="main--container" className="bg-slate-100 overflow-hidden">
       <Suspense fallback={<Loader />}>
         <Placeholder />
         <div className="h-screen fixed inset-0 z-10">

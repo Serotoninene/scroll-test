@@ -52,6 +52,7 @@ body {
 
 .gallery {
   position: absolute;
+  /* transform-origin: center; */
 }
 
 .gallery--grid {
@@ -67,10 +68,10 @@ body {
 .gallery--grid.gallery--switch {
   grid-gap: 56px;
   padding: 0;
-  grid-template-columns: repeat(3, 110vw);
-  grid-template-rows: repeat(3, 110vh);
-  left: calc(-110vw - 56px);
-  top: calc(-110vh - 56px);
+  grid-template-columns: repeat(3, 115vw);
+  grid-template-rows: repeat(3, 115vh);
+  left: calc(-115vw - 28px * 3);
+  top: calc(-122vh - 28px * 3);
 }
 
 .gallery__item-cut {
