@@ -44,6 +44,7 @@ export const LenisProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useLenis = () => {
   const context = useContext(LenisContext);
+
   if (context === undefined) {
     throw new Error("useLoadingContext must be used within a LoadingProvider");
   }
