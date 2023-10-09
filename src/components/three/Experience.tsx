@@ -1,4 +1,4 @@
-import { CustomCanvas, Fluids } from ".";
+import { CustomCanvas, House } from ".";
 import { Lights } from "./Lights";
 
 export const Experience = () => {
@@ -6,7 +6,7 @@ export const Experience = () => {
     <div className="h-full">
       <CustomCanvas>
         <Lights />
-        <Fluids />
+        <House />
       </CustomCanvas>
     </div>
   );

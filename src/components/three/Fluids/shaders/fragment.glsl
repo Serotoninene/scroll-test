@@ -5,9 +5,13 @@ varying vec2 vUv;
 
 
 void main() {   
-  float touch = texture2D(uTouchTexture, vUv).r;  
+  vec4 touchTexture = texture2D(uTouchTexture, vUv);  
+  float touch = touchTexture.r;
   vec4 color = vec4(.0 , vUv ,1.0);
-  color.rgb += vec3(touch);
+  color.g += touch;
+  color.b += touch;
+
+
 
   gl_FragColor = color;
 }

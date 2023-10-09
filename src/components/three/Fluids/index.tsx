@@ -19,13 +19,13 @@ export const Fluids = () => {
       step: 1,
     },
     maxAge: {
-      value: 120,
+      value: 500,
       min: 10,
       max: 1000,
       step: 1,
     },
     radius: {
-      value: 0.2,
+      value: 1,
       min: 0.01,
       max: 3.0,
       step: 0.01,
@@ -46,7 +46,7 @@ export const Fluids = () => {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uTouchTexture: { value: touchTexture },
+      uTouchTexture: { value: touchTexture.texture },
       uMouse: { value: { x: 0.0, y: 0.0 } },
       uRadius: { value: 0.07 },
       uIntensity: { value: 0.02 },

@@ -9,7 +9,7 @@ import { Object3D } from "three";
 import { mergeTimelines, useIntroAnim, useScrollAnim } from "./animations";
 import { useWindowSize } from "../../../hooks";
 
-const SKATE_SRC = "./assets/exportSk.gltf";
+const SKATE_SRC = "./assets/ThreeModels/Skate/skate.gltf";
 gsap.registerPlugin(ScrollTrigger);
 
 export const Skate = () => {
@@ -19,7 +19,7 @@ export const Skate = () => {
   const skateRef = useRef<Object3D>();
   const { width } = useWindowSize();
 
-  const skateScale = width ? width * 0.1 : 0;
+  const skateScale = width ? width * 0.01 : 0;
 
   // anims
   const introTl = useIntroAnim({

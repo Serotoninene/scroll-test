@@ -52,7 +52,7 @@ export default class TouchTexture {
     });
 
     // draw white points
-    this.trail.forEach((point, i) => {
+    this.trail.forEach((point) => {
       this.drawTouch(point);
     });
 
