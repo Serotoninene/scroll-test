@@ -9,7 +9,8 @@ import { Object3D } from "three";
 import { mergeTimelines, useIntroAnim, useScrollAnim } from "./animations";
 import { useWindowSize } from "../../../hooks";
 
-const SKATE_SRC = "./assets/ThreeModels/Skate/skate.gltf";
+const SKATE_SRC = "./assets/ThreeModels/Skate/exportSk2.glb";
+console.log("./assets/ThreeModels/Skate/exportSk2.glb");
 gsap.registerPlugin(ScrollTrigger);
 
 export const Skate = () => {
