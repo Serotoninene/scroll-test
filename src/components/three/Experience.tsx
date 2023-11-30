@@ -1,11 +1,13 @@
+import { OrbitControls } from "@react-three/drei";
 import { CustomCanvas } from ".";
-import { ShaderGradient } from "./ShaderGradient";
+import Particles from "./Particles";
 
 export const Experience = () => {
   return (
     <div className="h-full">
       <CustomCanvas>
-        <ShaderGradient />
+        <Particles />
+        <OrbitControls autoRotate />
       </CustomCanvas>
     </div>
   );

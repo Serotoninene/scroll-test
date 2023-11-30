@@ -76,7 +76,7 @@ export const Fluids = () => {
 
   return (
     <mesh>
-      <boxGeometry args={[1, 1, 1]} />
+      <boxGeometry args={[2, 2, 1]} />
       <shaderMaterial
         ref={shaderRef}
         vertexShader={vertexShader}
