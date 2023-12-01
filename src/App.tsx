@@ -1,8 +1,9 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
 import { Experience } from "./components/three";
 import { useProgress } from "@react-three/drei";
-import { Placeholder } from "./components/atoms";
+
+import data from "./adventOfCodeData.txt";
 
 const Loader = () => {
   const { progress } = useProgress();
@@ -17,6 +18,15 @@ const Loader = () => {
 };
 
 function App() {
+  //   useEffect(() => {
+  //     // read the data inside the file adventOfCodeData.txt
+  //     fetch(data)
+  //       .then((response) => response.text())
+  //       .then((data) => {
+  //         treatingTheData(data);
+  //       });
+  //   }, []);
+
   return (
     <main id="main--container" className="bg-slate-100 overflow-hidden">
       <Suspense fallback={<Loader />}>
