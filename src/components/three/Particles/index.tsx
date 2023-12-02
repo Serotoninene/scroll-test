@@ -5,7 +5,7 @@ import vertexShader from "./shaders/vertex.glsl";
 import fragmentShader from "./shaders/fragment.glsl";
 import { useFrame } from "@react-three/fiber";
 
-const PARTICLES: number = 10000;
+const PARTICLES: number = 500000;
 
 export default function Particles() {
   const shaderRef = useRef<THREE.ShaderMaterial>(null);
@@ -13,14 +13,16 @@ export default function Particles() {
 
   const particlesPosition = useMemo(() => {
     const particlesPosition = new Float32Array(PARTICLES * 3);
-    const distance = 250;
-
+    const radius = 500;
     for (let i = 0; i < PARTICLES; i++) {
+      const distance = Math.sqrt(Math.random()) * radius;
       const theta = THREE.MathUtils.randFloatSpread(360);
       const phi = THREE.MathUtils.randFloatSpread(360);
+
       const x = distance * Math.sin(theta) * Math.cos(phi);
       const y = distance * Math.sin(theta) * Math.sin(phi);
       const z = distance * Math.cos(theta);
+
       particlesPosition.set([x, y, z], i * 3);
     }
     return particlesPosition;
@@ -35,6 +37,7 @@ export default function Particles() {
 
   useFrame(({ clock }) => {
     const elapsedTime = clock.getElapsedTime();
+
     if (!shaderRef.current) return;
     shaderRef.current.uniforms.uTime.value = elapsedTime;
   });

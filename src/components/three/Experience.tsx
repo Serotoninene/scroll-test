@@ -7,7 +7,7 @@ export const Experience = () => {
     <div className="h-full">
       <CustomCanvas>
         <Particles />
-        <OrbitControls autoRotate />
+        <OrbitControls autoRotate={false} />
       </CustomCanvas>
     </div>
   );

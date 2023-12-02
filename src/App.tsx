@@ -18,14 +18,19 @@ const Loader = () => {
 };
 
 function App() {
-  //   useEffect(() => {
-  //     // read the data inside the file adventOfCodeData.txt
-  //     fetch(data)
-  //       .then((response) => response.text())
-  //       .then((data) => {
-  //         treatingTheData(data);
-  //       });
-  //   }, []);
+  const treatingTheData = (data: string) => {
+    const lines = data.split("\n");
+    return lines;
+  };
+
+  useEffect(() => {
+    // read the data inside the file adventOfCodeData.txt
+    fetch(data)
+      .then((response) => response.text())
+      .then((data) => {
+        treatingTheData(data);
+      });
+  }, []);
 
   return (
     <main id="main--container" className="bg-slate-100 overflow-hidden">
