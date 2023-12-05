@@ -10,10 +10,10 @@ const PARTICLES: number = 500000;
 export default function Particles() {
   const shaderRef = useRef<THREE.ShaderMaterial>(null);
   const particlesRef = useRef<THREE.Points>(null);
+  const radius = 300;
 
   const particlesPosition = useMemo(() => {
     const particlesPosition = new Float32Array(PARTICLES * 3);
-    const radius = 500;
     for (let i = 0; i < PARTICLES; i++) {
       const distance = Math.sqrt(Math.random()) * radius;
       const theta = THREE.MathUtils.randFloatSpread(360);
@@ -31,6 +31,7 @@ export default function Particles() {
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
+      uRadius: { value: radius },
     }),
     []
   );
@@ -58,6 +59,8 @@ export default function Particles() {
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniforms}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
       />
     </points>
   );
