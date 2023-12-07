@@ -29,7 +29,7 @@ const CustomCamera = () => {
       fov={correctFov}
       position={[0, 0, 600]}
       near={10}
-      far={1000}
+      far={2000}
     />
   );
 };
@@ -39,7 +39,7 @@ export const CustomCanvas = ({ children }: Props) => {
 
   return (
     <Canvas flat ref={canvasRef}>
-      <Perf />
+      <Perf position="top-left" />
       <CustomCamera />
       {children}
     </Canvas>

@@ -33,6 +33,7 @@ function App() {
 
     lines.forEach((line, lineIdx) => {
       for (let i = 0; i < line.length; i++) {
+        let numStartIdx = i;
         const n = "" + line[i];
         if (isNaN(parseInt(n))) continue;
 
@@ -75,7 +76,10 @@ function App() {
 
           const curLine = currentLineIdx;
           const curRow = lines[currentLineIdx!].indexOf("*");
-          const key = `${curLine}-${curRow}`;
+          const currRowTest =
+            line.substring(numStartIdx - 1).indexOf("*") +
+            (line.length - numStartIdx);
+          const key = `${curLine}-${currRowTest}`;
           if (!founds[key]) {
             founds[key] = [];
           }
@@ -93,6 +97,7 @@ function App() {
     );
 
     const sum = multiFounds.reduce((prev, curr) => prev + curr, 0);
+    console.log(sum);
   };
 
   useEffect(() => {
@@ -107,7 +112,7 @@ function App() {
   return (
     <main id="main--container" className="overflow-hidden">
       <Suspense fallback={<Loader />}>
-        <div className="h-screen fixed bg-slate-50 inset-0 z-10">
+        <div className="h-screen fixed bg-slate-900 inset-0 z-10">
           <Experience />
         </div>
       </Suspense>

@@ -3,65 +3,119 @@ import * as THREE from "three";
 
 import vertexShader from "./shaders/vertex.glsl";
 import fragmentShader from "./shaders/fragment.glsl";
-import { useFrame } from "@react-three/fiber";
+import { createPortal, extend, useFrame } from "@react-three/fiber";
 
-const PARTICLES: number = 500000;
+import SimulationMaterial from "../SimulationMaterial";
+import { useFBO } from "@react-three/drei";
+
+// Make the simulation material available as a JSX element in our canva
+extend({ SimulationMaterial: SimulationMaterial });
 
 export default function Particles() {
-  const shaderRef = useRef<THREE.ShaderMaterial>(null);
-  const particlesRef = useRef<THREE.Points>(null);
-  const radius = 300;
+  const size = 128;
+
+  const points = useRef<THREE.Points>(null);
+  const simulationMaterialRef = useRef<THREE.ShaderMaterial>();
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(
+    -1,
+    1,
+    1,
+    -1,
+    1 / Math.pow(2, 53),
+    1
+  );
+  const positions = new Float32Array([
+    -1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0,
+  ]);
+  const uvs = new Float32Array([0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0]);
+
+  const renderTarget = useFBO(size, size, {
+    minFilter: THREE.NearestFilter,
+    magFilter: THREE.NearestFilter,
+    format: THREE.RGBAFormat,
+    stencilBuffer: false,
+    type: THREE.FloatType,
+  });
 
   const particlesPosition = useMemo(() => {
-    const particlesPosition = new Float32Array(PARTICLES * 3);
-    for (let i = 0; i < PARTICLES; i++) {
-      const distance = Math.sqrt(Math.random()) * radius;
-      const theta = THREE.MathUtils.randFloatSpread(360);
-      const phi = THREE.MathUtils.randFloatSpread(360);
-
-      const x = distance * Math.sin(theta) * Math.cos(phi);
-      const y = distance * Math.sin(theta) * Math.sin(phi);
-      const z = distance * Math.cos(theta);
-
-      particlesPosition.set([x, y, z], i * 3);
+    const length = size * size;
+    const particles = new Float32Array(length * 3);
+    for (let i = 0; i < length; i++) {
+      const i3 = i * 3;
+      particles[i3 + 0] = (i % size) / size;
+      particles[i3 + 1] = i / size / size;
     }
-    return particlesPosition;
-  }, [PARTICLES]);
+    return particles;
+  }, [size]);
 
   const uniforms = useMemo(
     () => ({
-      uTime: { value: 0 },
-      uRadius: { value: radius },
+      uPositions: {
+        value: new THREE.DataTexture(),
+      },
     }),
     []
   );
 
-  useFrame(({ clock }) => {
-    const elapsedTime = clock.getElapsedTime();
+  useFrame((state) => {
+    const { gl, clock } = state;
 
-    if (!shaderRef.current) return;
-    shaderRef.current.uniforms.uTime.value = elapsedTime;
+    gl.setRenderTarget(renderTarget);
+    gl.clear();
+    gl.render(scene, camera);
+    gl.setRenderTarget(null);
+
+    if (points.current) {
+      const material = points.current.material as THREE.ShaderMaterial;
+      material.uniforms.uPositions.value = renderTarget.texture;
+    }
+
+    if (simulationMaterialRef.current) {
+      simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
+    }
   });
 
   return (
-    <points ref={particlesRef}>
-      <bufferGeometry attach="geometry">
-        <bufferAttribute
-          attach={"attributes-position"}
-          count={PARTICLES}
-          array={particlesPosition}
-          itemSize={3}
-          normalized={false}
+    <>
+      {createPortal(
+        <mesh>
+          <simulationMaterial ref={simulationMaterialRef} args={[size]} />
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={positions.length / 3}
+              array={positions}
+              itemSize={3}
+            />
+            <bufferAttribute
+              attach="attributes-uv"
+              count={uvs.length / 2}
+              array={uvs}
+              itemSize={2}
+            />
+          </bufferGeometry>
+        </mesh>,
+        scene
+      )}
+      <points ref={points}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={particlesPosition.length / 3}
+            array={particlesPosition}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <shaderMaterial
+          depthWrite={false}
+          fragmentShader={fragmentShader}
+          vertexShader={vertexShader}
+          uniforms={uniforms}
+          blending={THREE.AdditiveBlending}
         />
-      </bufferGeometry>
-      <shaderMaterial
-        ref={shaderRef}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-      />
-    </points>
+      </points>
+    </>
   );
 }
