@@ -12,7 +12,7 @@ import { useFBO } from "@react-three/drei";
 extend({ SimulationMaterial: SimulationMaterial });
 
 export default function Particles() {
-  const size = 128;
+  const size = 1024;
 
   const points = useRef<THREE.Points>(null);
   const simulationMaterialRef = useRef<THREE.ShaderMaterial>();
@@ -72,7 +72,11 @@ export default function Particles() {
       material.uniforms.uPositions.value = renderTarget.texture;
     }
 
-    if (simulationMaterialRef.current) {
+    if (
+      simulationMaterialRef.current &&
+      simulationMaterialRef.current.uniforms &&
+      simulationMaterialRef.current.uniforms.uTime
+    ) {
       simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
     }
   });
@@ -81,7 +85,7 @@ export default function Particles() {
     <>
       {createPortal(
         <mesh>
-          <simulationMaterial ref={simulationMaterialRef} args={[size]} />
+          <simulationMaterial ref={simulationMaterialRef} args={[size, 500]} />
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"

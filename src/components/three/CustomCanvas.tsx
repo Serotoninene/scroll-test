@@ -26,9 +26,9 @@ const CustomCamera = () => {
     <PerspectiveCamera
       ref={cameraRef}
       makeDefault
-      fov={correctFov}
-      position={[0, 0, 600]}
-      near={10}
+      fov={45}
+      position={[0, 0, 10]}
+      near={1}
       far={2000}
     />
   );
