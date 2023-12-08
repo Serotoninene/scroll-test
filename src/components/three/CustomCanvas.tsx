@@ -1,6 +1,5 @@
-import { useWindowSize } from "../../hooks/useWindowSize";
 import { Canvas } from "@react-three/fiber";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { PerspectiveCamera } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 
@@ -10,17 +9,6 @@ type Props = {
 
 const CustomCamera = () => {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
-
-  const { height, width } = useWindowSize();
-  const [correctFov, setCorrectFov] = useState(0);
-
-  // useHelper(cameraRef, CameraHelper, "cyan");
-
-  useEffect(() => {
-    if (!height || !width) return;
-
-    setCorrectFov(((Math.atan(height / 2 / 600) * 180) / Math.PI) * 2);
-  }, [height, width]);
 
   return (
     <PerspectiveCamera

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { gsap, Power3 } from "gsap";
+import { gsap } from "gsap";
 import { Object3D } from "three";
 
 type Props = {
