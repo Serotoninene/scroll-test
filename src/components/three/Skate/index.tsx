@@ -10,6 +10,7 @@ import { mergeTimelines, useIntroAnim, useScrollAnim } from "./animations";
 import { useWindowSize } from "../../../hooks";
 
 const SKATE_SRC = "./assets/ThreeModels/Skate/exportSk2.glb";
+const LOGO_SRC = "./assets/ThreeModels/Serotonine_Icon/untitled.glb";
 gsap.registerPlugin(ScrollTrigger);
 
 export const Skate = () => {
@@ -55,7 +56,9 @@ export const Skate = () => {
         object={model.scene}
         scale={[skateScale, skateScale, skateScale]}
         rotation={[-1.5, 0.35, -0.55]}
-      />
+      >
+        <meshStandardMaterial attach="material" color="0xFFFFFF" />
+      </primitive>
     </Float>
   );
 };

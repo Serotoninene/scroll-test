@@ -1,13 +1,16 @@
-import { OrbitControls } from "@react-three/drei";
 import { CustomCanvas } from ".";
-import Particles from "./Particles";
+import { FallingLogos } from "./FallingLogos";
+import { Lights } from "./Lights";
+// import Particles from "./Particles";
 
 export const Experience = () => {
   return (
     <div className="h-full">
       <CustomCanvas>
-        <Particles />
-        <OrbitControls autoRotate={false} />
+        {/* <Particles /> */}
+        <FallingLogos />
+        <Lights />
+        {/* <OrbitControls autoRotate={false} /> */}
       </CustomCanvas>
     </div>
   );
